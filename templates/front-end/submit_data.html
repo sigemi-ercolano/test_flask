@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data</title>
+</head>
+<body>
+    <h1>Submit Data</h1>
+    <form id="data-form" method="POST">
+        <label for="value1">Value 1:</label>
+        <input type="text" id="value1" name="value1"><br><br>
+        <label for="value2">Value 2:</label>
+        <input type="text" id="value2" name="value2"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("data-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita l'invio del modulo
+            var formData = new FormData(this);
+            var jsonData = {};
+            formData.forEach(function(value, key){
+                jsonData[key] = value;
+            });
+
+            fetch('/submit_all_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                alert(data); // Mostra una notifica con il messaggio di risposta dal server
+                //window.location.href = data;  // redirect to another page
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Si è verificato un errore durante l\'invio dei dati.');
+            });
+        });
+    </script>
+</body>
+</html>
