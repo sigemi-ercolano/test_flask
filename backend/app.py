@@ -18,13 +18,13 @@ print('Connecting to SQL Server...')
 db_connection = pyodbc.connect(conn_str)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    return render_template('html/index.html')
+    return render_template('index.html')
 
-@app.route('/html/submit_data')
+@app.route('/submit_data')
 def submit_data_form():
-    return render_template('html/submit_data.html')
+    return render_template('submit_data.html')
 
 
 @app.route('/submit_all_data', methods=['POST'])
@@ -38,11 +38,11 @@ def submit_data():
     cursor.execute(query, values)
     db_connection.commit()
     cursor.close()
-    return '/html/show_data'
+    return 'show_data'
 
 
 
-@app.route('/html/show_data')
+@app.route('/show_data', methods=['GET'])
 def show_data():
     # Esegui la query per ottenere tutti i dati dal database
     cursor = db_connection.cursor()
@@ -51,8 +51,8 @@ def show_data():
     data = cursor.fetchall()
     cursor.close()
     # Passa i dati al template HTML per la visualizzazione
-    return render_template('html/show_data.html', data=data)
+    return render_template('show_data.html', data=data)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5090, debug=False)

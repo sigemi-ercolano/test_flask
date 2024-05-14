@@ -16,7 +16,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  backend:
+  flaskapp:
     build:
       context: ./backend
     ports:
@@ -30,10 +30,14 @@ services:
         max-file: "3"
 
   frontend:
-    build:
-      context: ./frontend
+    image: nginx:latest
     ports:
-      - "80:80"
+      - "8080:80"
+    volumes:
+    - ./frontend/flaskapp.conf:/etc/nginx/nginx.conf
+    - ./frontend/templates:/usr/share/nginx/html
+    depends_on: 
+      - flaskapp
     logging:
       driver: "json-file"
       options:

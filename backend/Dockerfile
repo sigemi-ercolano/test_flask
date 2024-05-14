@@ -14,17 +14,20 @@ RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17
 # Crea un utente non root per eseguire l'applicazione
 RUN adduser --disabled-password --gecos '' myuser
 
-WORKDIR /app
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN mkdir -p /opt/services/flaskapp/src 
+COPY requirements.txt /opt/services/flaskapp/src/
+WORKDIR /opt/services/flaskapp/src
+RUN pip install -r requirements.txt
 
 # Copia il codice dell'applicazione
-COPY app.py .
+COPY . /opt/services/flaskapp/src
 
 # Imposta i permessi appropriati per l'utente non root
-RUN chown -R myuser:myuser /app
+RUN chown -R myuser:myuser /opt/services/flaskapp/src
 
 # Commuta a un utente non root
 USER myuser
+
+EXPOSE 5090
 
 CMD ["python", "app.py"]
