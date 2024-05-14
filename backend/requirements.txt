@@ -1,0 +1,5 @@
+Flask
+pyodbc
+#!apt install unixodbc-dev
+#!pip install pyodbc
+#RUN sudo apt install unixodbc-dev

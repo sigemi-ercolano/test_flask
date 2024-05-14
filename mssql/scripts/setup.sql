@@ -5,9 +5,8 @@
 -- yourStrongPassword!1
 
 CREATE DATABASE test_db;
-GO;
-use test_db;
-GO;
+GO
+use test_db
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'table_test')
 create table table_test
 (
@@ -15,7 +14,6 @@ create table table_test
     username varchar(100),
     surname varchar(100),
 );
-go
--- INSERT INTO test_db.dbo.table_test (id, username,surname)
+GO
 -- VALUES (11, N'Customer01');
 -- go

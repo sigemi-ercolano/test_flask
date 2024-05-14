@@ -6,7 +6,7 @@ app = Flask(__name__)
 # Connessione al database MSSQL
 conn_str = (
     r'DRIVER={ODBC Driver 17 for SQL Server};'
-    r'SERVER=localhost;'
+    r'SERVER=mssql,1433;'
     r'DATABASE=test_db;'
     r'UID=sa;'
     r'PWD=yourStrongPassword!1'
@@ -20,11 +20,11 @@ db_connection = pyodbc.connect(conn_str)
 
 @app.route('/')
 def index():
-    return render_template('front-end/index.html')
+    return render_template('html/index.html')
 
-@app.route('/front-end/submit_data')
+@app.route('/html/submit_data')
 def submit_data_form():
-    return render_template('front-end/submit_data.html')
+    return render_template('html/submit_data.html')
 
 
 @app.route('/submit_all_data', methods=['POST'])
@@ -38,11 +38,11 @@ def submit_data():
     cursor.execute(query, values)
     db_connection.commit()
     cursor.close()
-    return '/front-end/show_data'
+    return '/html/show_data'
 
 
 
-@app.route('/front-end/show_data')
+@app.route('/html/show_data')
 def show_data():
     # Esegui la query per ottenere tutti i dati dal database
     cursor = db_connection.cursor()
@@ -51,7 +51,7 @@ def show_data():
     data = cursor.fetchall()
     cursor.close()
     # Passa i dati al template HTML per la visualizzazione
-    return render_template('front-end/show_data.html', data=data)
+    return render_template('html/show_data.html', data=data)
 
 
 if __name__ == '__main__':
